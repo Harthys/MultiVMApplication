@@ -14,18 +14,7 @@ Vagrant.configure("2") do |config|
 	webserver.vm.hostname = "webserver"
 	webserver.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 	webserver.vm.network "private_network", ip: "192.168.2.11"
-	
-	webserver.vm.provision "shell", inline: <<-SHELL
-	  apt-get update
-	  apt-get install -y apache2
-	  # Change VM's webserver's configuration to use shared folder.
-      # (Look inside test-website.conf for specifics.)
-      cp /vagrant/website.conf /etc/apache2/sites-available/
-      # install our website configuration and disable the default
-      a2ensite website
-      a2dissite 000-default
-      service apache2 reload
-	SHELL
+	webserver.vm.provision "shell", path: "webserversetup.sh"
   end
 
 
@@ -33,19 +22,13 @@ Vagrant.configure("2") do |config|
   config.vm.define "dbserver" do |dbserver|
     dbserver.vm.hostname = "dbserver"
 	dbserver.vm.network "private_network", ip: "192.168.2.12"
-	
-	dbserver.vm.provision "shell", inline: <<-SHELL
-	  apt-get update
-	SHELL
+	dbserver.vm.provision "shell", path: "dbserversetup.sh"
   end
   
   #Creating a separate VM for the admin
   config.vm.define "adminserver" do |adminserver|
     adminserver.vm.hostname = "adminserver"
 	adminserver.vm.network "private_network", ip: "192.168.2.13"
-	
-	adminserver.vm.provision "shell", inline: <<-SHELL
-	  apt-get update
-	SHELL
+	adminserver.vm.provision "shell", path: "adminserversetup.sh"
   end
 end

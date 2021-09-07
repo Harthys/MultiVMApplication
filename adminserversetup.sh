@@ -12,4 +12,4 @@ apt-get install -y nuget
 cp -R /vagrant/WebApi WebApi
 cd WebApi
 nuget sources add -Name nuget -Source "https://api.nuget.org/v3/index.json"
-sudo dotnet build
+sudo dotnet run --project WebApi

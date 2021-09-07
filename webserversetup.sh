@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-apt-get update
-apt-get install -y apache2
-
-# Change VM's webserver's configuration to use shared folder.
-# (Look inside test-website.conf for specifics.)
-cp /vagrant/website.conf /etc/apache2/sites-available/
-
-# install our website configuration and disable the default
-a2ensite website
-a2dissite 000-default
-service apache2 reload
+sudo apt-get update
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+cp -R /vagrant/ReactClient/react-app react-app
+cd react-app
+sudo rm package-lock.json
+sudo npm install
+sudo npm install typescript
+sudo npm install axios --save
+sudo sysctl -w fs.inotify.max_user_watches=100000
+sudo npm start

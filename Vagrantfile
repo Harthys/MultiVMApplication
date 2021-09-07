@@ -8,19 +8,12 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
 
-
-  #Creating a separate VM for the web server
-  config.vm.define "webserver" do |webserver|
-	webserver.vm.hostname = "webserver"
-	webserver.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-	webserver.vm.network "private_network", ip: "192.168.2.11"
-	webserver.vm.provision "shell", path: "webserversetup.sh"
-  end
-
-
   #Creating a separate VM for the database server
   config.vm.define "dbserver" do |dbserver|
-    dbserver.vm.hostname = "dbserver"
+    dbserver.vm.provider "virtualbox" do |v|
+      v.memory = 2048
+    end
+	dbserver.vm.hostname = "dbserver"
 	dbserver.vm.network "private_network", ip: "192.168.2.12"
 	dbserver.vm.provision "shell", path: "dbserversetup.sh"
   end
@@ -30,5 +23,13 @@ Vagrant.configure("2") do |config|
     adminserver.vm.hostname = "adminserver"
 	adminserver.vm.network "private_network", ip: "192.168.2.13"
 	adminserver.vm.provision "shell", path: "adminserversetup.sh"
+  end
+  
+  #Creating a separate VM for the web server
+  config.vm.define "webserver" do |webserver|
+	webserver.vm.hostname = "webserver"
+	webserver.vm.network "forwarded_port", guest: 80, host: 3000, host_ip: "192.168.2.11"
+	webserver.vm.network "private_network", ip: "192.168.2.11"
+	webserver.vm.provision "shell", path: "webserversetup.sh"
   end
 end

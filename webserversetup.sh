@@ -3,7 +3,7 @@
 sudo apt-get update
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt-get install -y nodejs
-cp -R /vagrant/ReactClient/react-app react-app
+cp -R /vagrant/ReactApp/react-app react-app
 cd react-app
 sudo rm package-lock.json
 sudo npm install
